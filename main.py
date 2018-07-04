@@ -32,14 +32,42 @@ class Chance:
     def getChance(self):
         return self.chance
 
-def calculateChance_1(graph):
+def calculateChance_1(graph: Graph):
+    "Method 1"
     chances = []
     for i in range(len(graph.graph)):
-        for j in range(i, i + 1):
+        for j in range(i + 1, len(graph.graph)):
             if j not in graph.graph[i]:
-                chances.append(Chance(i, j, graph.getCommon(i, j)))
+                chances.append(Chance(i, j, len(graph.getCommon(i, j))))
+
+    chances.sort(key=lambda x: x.chance, reverse=True)
+    return chances
+
+def calculateChance_2(graph: Graph):
+    "Method 2"
+    chances = []
+    for i in range(len(graph.graph)):
+        for j in range(i + 1, len(graph.graph)):
+            if j not in graph.graph[i]:
+                chances.append(Chance(i, j, len(graph.getCommon(i, j)) / len(graph.getUnion(i, j))))
+
+    chances.sort(key=lambda x: x.chance, reverse=True)
+    return chances
+
+def calculateChance_3(graph: Graph):
+    "Method 3"
+    chances = []
+    for i in range(len(graph.graph)):
+        for j in range(i + 1, len(graph.graph)):
+            if j not in graph.graph[i]:
+                chances.append(Chance(i, j, len(graph.graph[i]) * len(graph.graph[j])))
+
+    chances.sort(key=lambda x: x.chance, reverse=True)
+    return chances
+
 
 
 graph = Graph(5)
+
 graph.addEdge(0,4)
 print(graph.graph)
