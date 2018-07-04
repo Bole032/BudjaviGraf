@@ -7,6 +7,7 @@ class Graph:
 
         ceoFajl = dictionary.takeFromCSV(file)
         self.graph = dictionary.sedamdesetPosto(ceoFajl[1: lines])
+        
 
     def load(self):
         "Loads graph into a dict"
@@ -24,7 +25,8 @@ class Graph:
 
     def getUnion(self, node1, node2):
         "Return list of union nodes"
-        return list(set().intersection(self.graph[node1], self.graph[node2]))
+        union=self.graph[node1]+self.graph[node2]
+        return list(set(union))
 
 class Chance:
     def __init__(self, node1, node2, chance):
@@ -49,10 +51,11 @@ def calculateChance_1(graph: Graph):
 def calculateChance_2(graph: Graph):
     "Method 2"
     chances = []
-    for i in range(len(graph.graph)):
+    for i in range(1, len(graph.graph)):
         for j in range(i + 1, len(graph.graph)):
             if j not in graph.graph[i]:
-                chances.append(Chance(i, j, len(graph.getCommon(i, j)) / len(graph.getUnion(i, j))))
+                if not(len(graph.getUnion(i, j)) == 0):
+                    chances.append(Chance(i, j, len(graph.getCommon(i, j)) / len(graph.getUnion(i, j))))
 
     chances.sort(key=lambda x: x.chance, reverse=True)
     return chances
@@ -60,7 +63,7 @@ def calculateChance_2(graph: Graph):
 def calculateChance_3(graph: Graph):
     "Method 3"
     chances = []
-    for i in range(len(graph.graph)):
+    for i in range(1, len(graph.graph)):
         for j in range(i + 1, len(graph.graph)):
             if j not in graph.graph[i]:
                 chances.append(Chance(i, j, len(graph.graph[i]) * len(graph.graph[j])))
@@ -73,4 +76,5 @@ def calculateChance_3(graph: Graph):
 graph = Graph('cleaned.csv', 13839)
 
 #print(graph.graph)
-print(calculateChance_1(graph))
+for chance in calculateChance_3(graph):
+    print([chance.node1, chance.node2, chance.chance])
