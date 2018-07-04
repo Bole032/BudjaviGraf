@@ -1,19 +1,22 @@
+import dictionary
+
 class Graph:
 
-    def __init__(self, n):
-        self.graph = {}
-        for i in range(n):
-            self.graph[i] = []
+    def __init__(self, file, maxLines):
+        lines = int(maxLines*0.7)
 
-    def load():
+        ceoFajl = dictionary.takeFromCSV(file)
+        self.graph = dictionary.sedamdesetPosto(ceoFajl[1: lines])
+
+    def load(self):
         "Loads graph into a dict"
 
     def addEdge(self,a , b):
         "Adds edge to the graph"
         self.graph[a].append(b)
-        self.graph[a].sort()
+        # self.graph[a].sort()
         self.graph[b].append(a)
-        self.graph[b].sort()
+        # self.graph[b].sort()
 
     def getCommon(self, node1, node2):
         "Return list of common nodes"
@@ -35,7 +38,7 @@ class Chance:
 def calculateChance_1(graph: Graph):
     "Method 1"
     chances = []
-    for i in range(len(graph.graph)):
+    for i in range(1, len(graph.graph)):
         for j in range(i + 1, len(graph.graph)):
             if j not in graph.graph[i]:
                 chances.append(Chance(i, j, len(graph.getCommon(i, j))))
@@ -67,7 +70,7 @@ def calculateChance_3(graph: Graph):
 
 
 
-graph = Graph(5)
+graph = Graph('cleaned.csv', 13839)
 
-graph.addEdge(0,4)
-print(graph.graph)
+#print(graph.graph)
+print(calculateChance_1(graph))

@@ -12,6 +12,8 @@ def sedamdesetPosto(niz):
     dictonary = {}
     for red in niz:
         splitRow = red.split(',')
+        splitRow[1] = int(splitRow[1])
+        splitRow[2] = int(splitRow[2])
         if splitRow[1] in dictonary:
             dictonary[splitRow[1]].append(splitRow[2])
         else:
